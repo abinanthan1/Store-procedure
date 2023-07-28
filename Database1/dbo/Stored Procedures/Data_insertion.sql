@@ -8,7 +8,7 @@
 AS
 BEGIN 
 
---Decalaring parameter to count the inserted rows
+--Decalaring parameter to inserted rows
  DECLARE @insertcount int
 	         
                                                                              --Using exception handling to INSERT without duplicate id
