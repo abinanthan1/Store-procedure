@@ -66,5 +66,9 @@
     <Build Include="dbo\Tables\backup_data.sql" />
     <Build Include="dbo\Stored Procedures\Deletion_andBackup.sql" />
     <Build Include="dbo\Stored Procedures\Data_insertion.sql" />
+    <Build Include="dbo\Tables\Restore_table.sql" />
+    <Build Include="dbo\Tables\Record_table.sql" />
+    <Build Include="dbo\Tables\Log_table.sql" />
+    <Build Include="dbo\Stored Procedures\Insertionanddeletion.sql" />
   </ItemGroup>
 </Project>
