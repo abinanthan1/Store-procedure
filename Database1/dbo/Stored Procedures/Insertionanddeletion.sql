@@ -65,4 +65,36 @@ BEGIN
             VALUES ('Data deletion failed for name: ' + @EmployeName + '. Error: ' + @ErrorMessag, @ErrorSeverit, @ErrorStat,@ErrorProcedur,@ErrorLin,@ErrorNumbe, GETDATE());
         END CATCH;
     END;
+	 IF @Type = 'UPDATE'
+    BEGIN   
+        BEGIN TRY 
+		  
+		IF EXISTS (SELECT 1 FROM Record_table WHERE EmployeId = @EmployeId)
+        BEGIN
+            -- Perform the UPDATION
+              UPDATE  RECORD_TABLE SET EmployeName=@EmployeName,EmployeMail=@EmployeMail,EmployeAddress=@EmployeAddress WHERE EmployeId=@EmployeId;
+
+            INSERT INTO Log_table (ErrorMessage, ErrorSeverity, ErrorState,ErrorProcedure,ErrorLine,ErrorNumber,ErrorTime)
+            VALUES ('Data updation succeeded for name: ' + @EmployeName, 0, 0,'',0,0,GETDATE());
+        END
+        ELSE
+        BEGIN
+            -- If the record does not exist, insert a log indicating it was not found
+            INSERT INTO Log_table (ErrorMessage, ErrorSeverity, ErrorState,ErrorProcedure,ErrorLine,ErrorNumber, ErrorTime)
+            VALUES ('Data updationn failed for name: ' + @EmployeName + '. Record not found.', 0, 0,'',0,0,GETDATE());
+        END
+        END TRY
+        BEGIN CATCH
+            DECLARE @ErrorMessa NVARCHAR(4000) = ERROR_MESSAGE();
+            DECLARE @ErrorSeveri INT = ERROR_SEVERITY();
+            DECLARE @ErrorSta INT = ERROR_STATE();
+			DECLARE @ErrorProcedu NVARCHAR(128)=Error_Procedure();
+			DECLARE	@ErrorLi INT=Error_Line()
+	        DECLARE @ErrorNumb INT=Error_Number()
+
+
+            INSERT INTO Log_table (ErrorMessage, ErrorSeverity, ErrorState,ErrorProcedure,ErrorLine,ErrorNumber,ErrorTime)
+            VALUES ('Data updation failed for name: ' + @EmployeName + '. Error: ' + @ErrorMessa, @ErrorSeveri, @ErrorSta,@ErrorProcedu,@ErrorLi,@ErrorNumb, GETDATE());
+        END CATCH;
+		END;
 END;
